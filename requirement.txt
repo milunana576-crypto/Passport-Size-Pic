@@ -1,0 +1,9 @@
+streamlit
+pillow
+opencv-python-headless
+rembg
+torch
+torchvision
+diffusers
+transformers
+accelerate
