@@ -1,0 +1,25 @@
+def remove_background(image):
+    input_image = Image.fromarray(image)
+    output = remove(input_image)
+    return np.array(output)
+
+def change_background(image, bg_color="white"):
+    rgba = remove_background(image)
+    
+    # Split channels
+    rgb = rgba[:, :, :3]
+    alpha = rgba[:, :, 3] / 255.0
+    
+    h, w = rgb.shape[:2]
+
+    if bg_color == "white":
+        bg = np.ones((h, w, 3), dtype=np.uint8) * 255
+    elif bg_color == "blue":
+        bg = np.zeros((h, w, 3), dtype=np.uint8)
+        bg[:, :, 2] = 255
+    else:
+        bg = np.ones((h, w, 3), dtype=np.uint8) * 240
+
+    # Blend
+    result = (rgb * alpha[:, :, None] + bg * (1 - alpha[:, :, None])).astype(np.uint8)
+    return result
